@@ -99,6 +99,18 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
     task.resume()
   }
   
+  override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    let vc = segue.destinationViewController as! MovieDetailsViewController
+    let indexPath = moviesTableView.indexPathForCell(sender as! UITableViewCell)
+    let baseUrl = "http://image.tmdb.org/t/p/original"
+
+    let movie = moviesData![(indexPath?.row)!]
+    let posterPath = movie["poster_path"] as! String
+    let imageUrl = NSURL(string: baseUrl + posterPath)
+    vc.moviesDetailsImageUrl = imageUrl
+    
+  }
+  
   func fetchData(){
     EZLoadingActivity.show("Loading", disableUI: true)
     let apiKey = "a07e22bc18f5cb106bfe4cc1f83ad8ed"

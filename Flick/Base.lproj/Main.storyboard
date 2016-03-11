@@ -31,11 +31,11 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="MovieCell" rowHeight="146" id="eIj-k9-YTx" customClass="MovieCell" customModule="Flick" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="MovieCell" rowHeight="146" id="eIj-k9-YTx" customClass="MovieCell" customModule="Flick" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="320" height="146"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="eIj-k9-YTx" id="Ymg-eo-AlT">
-                                            <rect key="frame" x="0.0" y="0.0" width="287" height="145.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="145.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="4XG-7a-F4F">
@@ -82,22 +82,25 @@
             </objects>
             <point key="canvasLocation" x="620" y="323"/>
         </scene>
-        <!--View Controller-->
+        <!--Movie Details View Controller-->
         <scene sceneID="22X-bD-Z1w">
             <objects>
-                <viewController id="daJ-xN-GuK" sceneMemberID="viewController">
+                <viewController id="daJ-xN-GuK" customClass="MovieDetailsViewController" customModule="Flick" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="jmY-D2-bkd">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="khu-HL-hnb">
-                                <rect key="frame" x="0.0" y="64" width="320" height="208"/>
+                                <rect key="frame" x="0.0" y="64" width="320" height="311"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" id="fH4-lk-IKW"/>
+                    <connections>
+                        <outlet property="movieDetailsImageView" destination="khu-HL-hnb" id="w1y-IY-9Aa"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="gsP-zm-4YZ" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
