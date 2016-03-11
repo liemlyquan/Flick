@@ -30,18 +30,22 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
     EZLoadingActivity.Settings.FailText = "Error"
     movieSearchBar.sizeToFit()
     navigationItem.titleView = movieSearchBar
+
     haveNetworkConnection = connectedToNetwork()
-  }
-  
-  override func viewDidAppear(animated: Bool) {
     if (haveNetworkConnection! == true){
       fetchData()
     } else {
-      UIView.animateWithDuration(500, animations: {
-        self.noNetworkConnectionLabel.layer.zPosition = 1
-        self.noNetworkConnectionLabel.alpha = 1
-      }, completion: nil)
+      self.noNetworkConnectionLabel.layer.zPosition = 1
+      // Thanks to AntiStrike12
+      // stackoverflow.com/questions/28288476/fade-in-and-fade-out-in-animation-swift
+      UIView.animateWithDuration(2, delay: 1, options: UIViewAnimationOptions.CurveEaseOut, animations: {
+        self.noNetworkConnectionLabel.alpha = 0.0
+        }, completion: nil )
     }
+  }
+  
+  override func viewDidAppear(animated: Bool) {
+
   }
   
   override func didReceiveMemoryWarning() {
