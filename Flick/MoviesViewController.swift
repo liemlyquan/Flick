@@ -10,19 +10,22 @@ import UIKit
 import AFNetworking
 import EZLoadingActivity
 import SystemConfiguration
+import Foundation
 
-
-class MoviesViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class MoviesViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UISearchBarDelegate {
   @IBOutlet weak var moviesTableView: UITableView!
   @IBOutlet weak var movieSearchBar: UISearchBar!
   @IBOutlet weak var noNetworkConnectionLabel: UILabel!
   var moviesData:[NSDictionary]?
   var haveNetworkConnection:Bool?
+  var filteredData = [NSDictionary]()
+  var isSearching:Bool = false
   
   override func viewDidLoad() {
     super.viewDidLoad()
     moviesTableView.dataSource = self
     moviesTableView.delegate = self
+    movieSearchBar.delegate = self
     let refreshControl = UIRefreshControl()
     refreshControl.addTarget(self, action: "refreshControlAction:", forControlEvents: UIControlEvents.ValueChanged)
     moviesTableView.insertSubview(refreshControl, atIndex: 0)
@@ -44,10 +47,6 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
     }
   }
   
-  override func viewDidAppear(animated: Bool) {
-
-  }
-  
   override func didReceiveMemoryWarning() {
     super.didReceiveMemoryWarning()
     // Dispose of any resources that can be recreated.
@@ -55,18 +54,33 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
   
   func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     if let moviesData = moviesData {
-      return moviesData.count
+      if (isSearching){
+        print("here")
+        return filteredData.count
+      } else {
+        print("wrong 1")
+        return moviesData.count
+      }
     } else {
       return 0
     }
   }
   
-  
   func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-//    let cell = tableView.dequeueReusableCellWithIdentifier("MovieCell", forIndexPath: indexPath)
     let cell = tableView.dequeueReusableCellWithIdentifier("MovieCell", forIndexPath: indexPath) as! MovieCell
-    
-    let movie = moviesData![indexPath.row]
+    if (movieSearchBar.text!.isEmpty) {
+      isSearching = false
+    } else {
+      isSearching = true
+    }
+    var movie = NSDictionary()
+    if (isSearching) {
+      print("here too")
+      movie = filteredData[indexPath.row]
+    } else {
+      print("wrong 2")
+      movie = moviesData![indexPath.row]
+    }
     let title = movie["title"] as! String
     let overview = movie["overview"] as! String
     
@@ -93,7 +107,7 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
       completionHandler: { (dataOrNil, response, error) in
         if let data = dataOrNil {
           if let responseDictionary = try! NSJSONSerialization.JSONObjectWithData(data, options: []) as? NSDictionary {
-            self.moviesData = responseDictionary["results"] as! [NSDictionary]
+            self.moviesData = responseDictionary["results"] as! [NSDictionary]!
             self.moviesTableView.reloadData()
             refreshControl.endRefreshing()
           }
@@ -108,10 +122,26 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
     let indexPath = moviesTableView.indexPathForCell(sender as! UITableViewCell)
     let baseUrl = "http://image.tmdb.org/t/p/original"
 
-    let movie = moviesData![(indexPath?.row)!]
+    if (movieSearchBar.text!.isEmpty) {
+      isSearching = false
+    } else {
+      isSearching = true
+    }
+    var movie:NSDictionary
+    
+    if (isSearching) {
+      movie = filteredData[indexPath!.row]
+    } else {
+      movie = moviesData![indexPath!.row]
+    }
+    
+    let title = movie["title"] as! String
+    let overview = movie["overview"] as! String
     let posterPath = movie["poster_path"] as! String
+    vc.movieDetailsTitleString = title
+    vc.movieDetailsOverviewString = overview
     let imageUrl = NSURL(string: baseUrl + posterPath)
-    vc.moviesDetailsImageUrl = imageUrl
+    vc.movieDetailsImageUrl = imageUrl
     
   }
   
@@ -129,7 +159,7 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
       completionHandler: { (dataOrNil, response, error) in
         if let data = dataOrNil {
           if let responseDictionary = try! NSJSONSerialization.JSONObjectWithData(data, options: []) as? NSDictionary {
-            self.moviesData = responseDictionary["results"] as! [NSDictionary]
+            self.moviesData = responseDictionary["results"] as! [NSDictionary]!
             self.moviesTableView.reloadData()
             
             EZLoadingActivity.hide(success: true, animated: true)
@@ -166,7 +196,21 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
     return (isReachable && !needsConnection)
   }
   
-  
+  func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
+    print("run here")
+    // When there is no text, filteredData is the same as the original data
+    if searchText.isEmpty {
+      isSearching = false
+    } else {
+      isSearching = true
+      filteredData = moviesData!.filter({(dataItem) -> Bool in
+        let tmp:NSDictionary = dataItem
+        let range = tmp["title"]!.rangeOfString(searchText, options: NSStringCompareOptions.CaseInsensitiveSearch)
+        return range.location != NSNotFound
+      })
+    }
+    moviesTableView.reloadData()
+  }
   
   
   
