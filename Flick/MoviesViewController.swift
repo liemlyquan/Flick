@@ -203,6 +203,8 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
   
   func searchBarCancelButtonClicked(searchBar: UISearchBar) {
     searchBar.text = ""
+    isSearching = false
+    moviesTableView.reloadData()
     searchBar.resignFirstResponder()
   }
   
