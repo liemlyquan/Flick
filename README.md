@@ -19,7 +19,7 @@ approximately 9 hours in total
 * [ ] All images fade in as they are loading. (low)
 * [ ] For the large poster, load the low-res image first and switch to high-res when complete. (low)
 * [x] Customize the highlight and selection effect of the cell. (low)
-* [ ]Customize the navigation bar. (low)
+* [ ] Customize the navigation bar. (low)
 
 Walkthrough of the app
 ![App Walkthrough](https://raw.githubusercontent.com/liemlyquan/Flick/master/gif/Flick.gif)
