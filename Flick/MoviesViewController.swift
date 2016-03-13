@@ -56,10 +56,8 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
   func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     if let moviesData = moviesData {
       if (isSearching){
-        print("here")
         return filteredData.count
       } else {
-        print("wrong 1")
         return moviesData.count
       }
     } else {
@@ -69,17 +67,14 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
   
   func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
     let cell = tableView.dequeueReusableCellWithIdentifier("MovieCell", forIndexPath: indexPath) as! MovieCell
-    if (movieSearchBar.text!.isEmpty) {
-      isSearching = false
-    } else {
-      isSearching = true
-    }
+    let backgroundView = UIView()
+    backgroundView.backgroundColor = UIColor.init(red: 0.2, green: 0.7, blue: 0.1, alpha: 0.7)
+    cell.selectedBackgroundView = backgroundView
+    
     var movie = NSDictionary()
     if (isSearching) {
-      print("here too")
       movie = filteredData[indexPath.row]
     } else {
-      print("wrong 2")
       movie = moviesData![indexPath.row]
     }
     let title = movie["title"] as! String
@@ -123,11 +118,6 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
     let indexPath = moviesTableView.indexPathForCell(sender as! UITableViewCell)
     let baseUrl = "http://image.tmdb.org/t/p/original"
 
-    if (movieSearchBar.text!.isEmpty) {
-      isSearching = false
-    } else {
-      isSearching = true
-    }
     var movie:NSDictionary
     
     if (isSearching) {
@@ -198,8 +188,6 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
   }
   
   func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
-    print("run here")
-    // When there is no text, filteredData is the same as the original data
     if searchText.isEmpty {
       isSearching = false
     } else {
@@ -213,6 +201,10 @@ class MoviesViewController: UIViewController, UITableViewDataSource, UITableView
     moviesTableView.reloadData()
   }
   
+  func searchBarCancelButtonClicked(searchBar: UISearchBar) {
+    searchBar.text = ""
+    searchBar.resignFirstResponder()
+  }
   
   
   

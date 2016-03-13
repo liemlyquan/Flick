@@ -9,4 +9,5 @@ Time spent (in detailed and sequence):
 - 3.5 (add scrollview into details, improve network checking, and fixing some issues on the way)
 - 0.5 (add basic search bar, works, not tested with different interaction yet)
 - 0.5 (add tab bar)
-
+- 0.25 (add selection color)
+- 0.25 (clean text, lose focus on Cancel Search Bar)
