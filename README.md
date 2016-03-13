@@ -22,3 +22,6 @@ approximately 9 hours in total
 * [ ]Customize the navigation bar. (low)
 
 Walkthrough of the app
+![App Walkthrough](https://raw.githubusercontent.com/liemlyquan/Flick/master/gif/Flick.gif)
+
+GIF created with LiceCap.
